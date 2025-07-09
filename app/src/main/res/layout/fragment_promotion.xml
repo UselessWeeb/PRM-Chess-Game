@@ -1,0 +1,37 @@
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:columnCount="3"
+    android:padding="16dp">
+
+    <ImageButton
+        android:id="@+id/btnQueen"
+        android:contentDescription="@string/queen_promotion"
+        android:src="@drawable/black_queen" />
+
+    <ImageButton
+        android:id="@+id/btnRookKnight"
+        android:contentDescription="@string/chancellor_promotion"
+        android:src="@drawable/black_chancellor" />
+
+    <ImageButton
+        android:id="@+id/btnBishopKnight"
+        android:contentDescription="@string/archbishop_promotion"
+        android:src="@drawable/black_archbishop" />
+
+    <ImageButton
+        android:id="@+id/btnRook"
+        android:contentDescription="@string/rook_promotion"
+        android:src="@drawable/black_rook" />
+
+    <ImageButton
+        android:id="@+id/btnBishop"
+        android:contentDescription="@string/bishop_promotion"
+        android:src="@drawable/black_bishop" />
+
+    <ImageButton
+        android:id="@+id/btnKnight"
+        android:contentDescription="@string/horse_promotion"
+        android:src="@drawable/black_horse" />
+
+</GridLayout>

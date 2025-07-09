@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    android:background="#FFF3E0">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Game Introduction -->
+        <ImageView
+            android:id="@+id/iconGame"
+            android:layout_width="378dp"
+            android:layout_height="232dp"
+            android:contentDescription="@string/ic_game"
+            android:src="@drawable/icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <!-- Game Modes -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Game Modes"
+            android:textSize="20sp"
+            android:textColor="#5D4037"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1. Local 1v1 - Play with a friend on the same device"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2. Hotspot 1v1 - Connect with a friend via WiFi hotspot"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Custom Boards -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Custom Boards"
+            android:textSize="20sp"
+            android:textColor="#5D4037"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create boards from 6x6 up to 16x16 grids for unique gameplay experiences. Larger boards allow for more strategic possibilities with extended piece movement."
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Basic Rules -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/basic_rules"
+            android:textSize="20sp"
+            android:textColor="#5D4037"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/chess_rules_decs"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Chess Pieces -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/chess_pieces"
+            android:textSize="20sp"
+            android:textColor="#5D4037"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Pawn -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/black_pawn"
+                android:contentDescription="@string/pawn"
+                android:layout_marginRight="16dp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/pawn_moves_description"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <!-- Rook -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/black_rook"
+                android:contentDescription="@string/rook"
+                android:layout_marginRight="16dp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/rook_moves_description"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <!-- Knight -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/black_horse"
+                android:contentDescription="@string/knight"
+                android:layout_marginRight="16dp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/knight_moves_description"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <!-- Bishop -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/black_bishop"
+                android:contentDescription="@string/bishop"
+                android:layout_marginRight="16dp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/bishop_moves_description"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <!-- Archbishop (Custom Piece) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/black_archbishop"
+                android:contentDescription="@string/archbishop"
+                android:layout_marginRight="16dp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/archbishop_moves_description"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <!-- Chancellor (Custom Piece) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/black_chancellor"
+                android:contentDescription="@string/chancellor"
+                android:layout_marginRight="16dp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/chancellor_moves_description"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <!-- Queen -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/black_queen"
+                android:contentDescription="@string/queen"
+                android:layout_marginRight="16dp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/queen_moves_description"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <!-- King -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/black_king"
+                android:contentDescription="@string/king"
+                android:layout_marginRight="16dp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/king_moves_description"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <!-- Special Notes -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/special_notes"
+            android:textSize="20sp"
+            android:textColor="#5D4037"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/special_notes_desc"
+            android:textSize="16sp"/>
+    </LinearLayout>
+</ScrollView>

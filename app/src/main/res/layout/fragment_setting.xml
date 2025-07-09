@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Chess Rules Section -->
+        <TextView
+            style="@style/SettingsSectionTitle"
+            android:text="Chess Rules"/>
+
+        <LinearLayout
+            style="@style/SettingsItemLayout">
+            <Switch
+                android:id="@+id/switch_fairy_pieces"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:checked="true"/>
+            <TextView
+                style="@style/SettingsItemText"
+                android:text="Allow Fairy Pieces"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/SettingsItemLayout">
+            <Switch
+                android:id="@+id/switch_en_passant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:checked="true"/>
+            <TextView
+                style="@style/SettingsItemText"
+                android:text="En Passant"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/SettingsItemLayout">
+            <Switch
+                android:id="@+id/switch_promotion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:checked="true"/>
+            <TextView
+                style="@style/SettingsItemText"
+                android:text="Pawn Promotion"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/SettingsItemLayout">
+            <Switch
+                android:id="@+id/switch_castling"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:checked="true"/>
+            <TextView
+                style="@style/SettingsItemText"
+                android:text="Castling"/>
+        </LinearLayout>
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="24dp">
+
+            <Button
+                android:id="@+id/btn_save"
+                style="@style/SettingsButton"
+                android:text="Save"/>
+
+            <Button
+                android:id="@+id/btn_default"
+                style="@style/SettingsButton"
+                android:text="Restore Default"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

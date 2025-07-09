@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Chess</string>
+    <string name="horse_promotion">Promote to Knight</string>
+    <string name="bishop_promotion">Promote to Bishop</string>
+    <string name="rook_promotion">Promote to Rook</string>
+    <string name="queen_promotion">Promote to Queen</string>
+    <string name="chancellor_promotion">Promote to Chancellor</string>
+    <string name="archbishop_promotion">Promote to Bishop</string>
+    <string name="ic_game">I hate this world</string>
+    <string name="play_btn">Play Now !</string>
+    <string name="text_1v1_same_device">1v1(Same Device)</string>
+    <string name="text_vs_AI">vs AI</string>
+    <string name="game_title">Chess</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="custom_chess_instruction">Drag pieces onto the board</string>
+</resources>
