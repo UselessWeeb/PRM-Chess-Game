@@ -31,16 +31,18 @@ public class GameManager implements PromotionDialogFragment.OnPieceSelectedListe
     private int[] blackKingPos;
     private ChessAI chessAI;
     private boolean aiMode = false;
-    private boolean whiteKingSideCastle = true;
-    private boolean whiteQueenSideCastle = true;
-    private boolean blackKingSideCastle = true;
-    private boolean blackQueenSideCastle = true;
+    private boolean whiteKingSideCastle;
+    private boolean whiteQueenSideCastle;
+    private boolean blackKingSideCastle;
+    private boolean blackQueenSideCastle;
     private int[] enPassantTarget = null;
     private WiFiGameManager wifiGameManager;
-    private WeakReference<PlayActivity> activityRef;
+    private final WeakReference<PlayActivity> activityRef;
     private boolean promotionEnabled = true;
     private boolean enPassantEnabled = true;
     private boolean castlingEnabled = true;
+    private boolean riverEnabled = false;
+    private int riverRow = -1;
     public ChessAI getChessAI() {
         return chessAI;
     }
@@ -68,6 +70,46 @@ public class GameManager implements PromotionDialogFragment.OnPieceSelectedListe
     public void setCastlingEnabled(boolean castlingEnabled) {
         this.castlingEnabled = castlingEnabled;
     }
+
+    public void setRiverEnabled(boolean enabled) {
+        this.riverEnabled = enabled;
+    }
+
+    public boolean isRiverEnabled() {
+        return riverEnabled;
+    }
+
+    public int getRiverRow() {
+        if (riverEnabled) {
+            riverRow = boardSize / 2 - 1;
+        } else {
+            riverRow = -1;
+        }
+        return riverRow;
+    }
+
+    public boolean canCrossRiver(PieceType type) {
+        switch(type) {
+            case KNIGHT:
+            case ARCHBISHOP:
+            case CHANCELLOR:
+                return false;
+            case PAWN:
+            case ROOK:
+            case BISHOP:
+            case QUEEN:
+            case KING:
+            default:
+                return true;
+        }
+    }
+
+    public boolean isRiverBetween(int fromRow, int toRow) {
+        if (!riverEnabled) return false;
+        return (fromRow <= riverRow && toRow > riverRow) ||
+                (fromRow > riverRow && toRow <= riverRow);
+    }
+
     public GameManager(int boardSize, PlayActivity activity) {
         this.boardSize = boardSize;
         this.board = new Piece[boardSize][boardSize];
@@ -241,7 +283,11 @@ public class GameManager implements PromotionDialogFragment.OnPieceSelectedListe
             return false;
         }
 
+        PlayActivity activity = activityRef.get();
+
         Piece piece = board[fromRow][fromCol];
+
+        activity.playMoveSound();
 
         // Handle castling only if enabled
         if (castlingEnabled && piece.getPieceType() == PieceType.KING && Math.abs(fromCol - toCol) == 2) {
@@ -279,6 +325,8 @@ public class GameManager implements PromotionDialogFragment.OnPieceSelectedListe
         // Check if the move captures a piece
         if (board[toRow][toCol] != null) {
             handleCapture(toRow, toCol);
+            //capture sound
+            activity.playCaptureSound();
         }
 
         // Move the piece
@@ -296,8 +344,9 @@ public class GameManager implements PromotionDialogFragment.OnPieceSelectedListe
         // Check for pawn promotion only if promotion is enabled
         if (promotionEnabled && piece.getPieceType() == PieceType.PAWN &&
                 (toRow == 0 || toRow == boardSize - 1)) {
-            PlayActivity activity = activityRef.get();
             if (activity != null) {
+                //promotion sound
+                activity.playPromotionSound();
                 activity.showPromotionDialog();
             }
             return true;
@@ -314,10 +363,8 @@ public class GameManager implements PromotionDialogFragment.OnPieceSelectedListe
             }
         }
 
-        // Switch turns
         currentTurn = (currentTurn == Color.WHITE) ? Color.BLACK : Color.WHITE;
 
-        // Check for game-ending conditions after turn switch ONLY if game isn't already over
         if (!gameOver) {
             checkGameEnd();
         }
@@ -327,7 +374,6 @@ public class GameManager implements PromotionDialogFragment.OnPieceSelectedListe
             wifiGameManager.sendMove(new Move(fromRow, fromCol, toRow, toCol));
         }
 
-        PlayActivity activity = activityRef.get();
         if (activity != null && gameOver) {
             new Handler(Looper.getMainLooper()).post(activity::showGameOverDialog);
         }
@@ -350,7 +396,7 @@ public class GameManager implements PromotionDialogFragment.OnPieceSelectedListe
             return false;
         }
 
-        List<int[]> validMoves = piece.getValidMoves(fromRow, fromCol, board);
+        List<int[]> validMoves = piece.getValidMoves(fromRow, fromCol, board, this);
         for (int[] move : validMoves) {
             if (move[0] == toRow && move[1] == toCol) {
                 // Check if this move would leave the king in check
@@ -487,7 +533,7 @@ public class GameManager implements PromotionDialogFragment.OnPieceSelectedListe
             for (int col = 0; col < boardSize; col++) {
                 Piece piece = board[row][col];
                 if (piece != null && piece.getColor() == enemyColor) {
-                    List<int[]> moves = piece.getValidMoves(row, col, board);
+                    List<int[]> moves = piece.getValidMoves(row, col, board, this);
                     for (int[] move : moves) {
                         if (move[0] == kingPos[0] && move[1] == kingPos[1]) {
                             return true;
@@ -506,9 +552,8 @@ public class GameManager implements PromotionDialogFragment.OnPieceSelectedListe
             for (int col = 0; col < boardSize; col++) {
                 Piece piece = board[row][col];
                 if (piece != null && piece.getColor() == color) {
-                    List<int[]> pieceMoves = piece.getValidMoves(row, col, board);
+                    List<int[]> pieceMoves = piece.getValidMoves(row, col, board, this);
                     for (int[] move : pieceMoves) {
-                        // Check if this move would leave the king in check
                         if (!wouldMoveLeaveKingInCheckForColor(row, col, move[0], move[1], color)) {
                             allMoves.add(new int[]{row, col, move[0], move[1]});
                         }
@@ -516,7 +561,6 @@ public class GameManager implements PromotionDialogFragment.OnPieceSelectedListe
                 }
             }
         }
-
         return allMoves;
     }
 
@@ -570,7 +614,7 @@ public class GameManager implements PromotionDialogFragment.OnPieceSelectedListe
             return new ArrayList<>();
         }
 
-        List<int[]> validMoves = piece.getValidMoves(row, col, board);
+        List<int[]> validMoves = piece.getValidMoves(row, col, board, this);
         List<int[]> legalMoves = new ArrayList<>();
 
         for (int[] move : validMoves) {
@@ -583,18 +627,29 @@ public class GameManager implements PromotionDialogFragment.OnPieceSelectedListe
     }
 
     public String getGameStatus() {
+        PlayActivity activity = activityRef.get();
         if (!gameOver) {
             boolean inCheck = isKingInCheck(currentTurn);
+            if (inCheck) activity.playCheckSound();
             return (currentTurn == Color.WHITE ? "White" : "Black") + "'s turn" +
                     (inCheck ? " (Check!)" : "");
         } else {
             if (winner == null) {
+                activity.playWinSound();
                 if (isInsufficientMaterial()) {
                     return "Draw by insufficient material!";
                 } else {
                     return "Game ended in a draw (Stalemate)!";
                 }
             } else {
+                if (aiMode){
+                    //ai only consider win when white win
+                    if (winner == Color.WHITE) activity.playWinSound();
+                    else activity.playLoseSound();
+                } else {
+                    //pvp everyone win
+                    activity.playWinSound();
+                }
                 return (winner == Color.WHITE ? "White" : "Black") + " wins by checkmate!";
             }
         }
@@ -798,7 +853,7 @@ public class GameManager implements PromotionDialogFragment.OnPieceSelectedListe
 
     @Override
     public void onSettingsReceived(int receivedBoardSize, boolean fairyPieces,
-                                   boolean enPassant, boolean promotion, boolean castling) {
+                                   boolean enPassant, boolean promotion, boolean castling, boolean river) {
         // Update board size if changed
         if (this.boardSize != receivedBoardSize) {
             this.boardSize = receivedBoardSize;
@@ -806,7 +861,7 @@ public class GameManager implements PromotionDialogFragment.OnPieceSelectedListe
             initializeBoard();
         }
 
-        setSpecialRules(promotion, enPassant, castling);
+        setSpecialRules(promotion, enPassant, castling, river);
 
         PlayActivity activity = activityRef.get();
         if (activity != null) {
@@ -818,10 +873,11 @@ public class GameManager implements PromotionDialogFragment.OnPieceSelectedListe
         }
     }
 
-    public void setSpecialRules(boolean promotion, boolean enPassant, boolean castling) {
+    public void setSpecialRules(boolean promotion, boolean enPassant, boolean castling, boolean riverEnabled) {
         this.promotionEnabled = promotion;
         this.enPassantEnabled = enPassant;
         this.castlingEnabled = castling;
+        this.riverEnabled = riverEnabled;
 
         // If castling is disabled, mark all rooks and kings as having moved
         if (!castling) {

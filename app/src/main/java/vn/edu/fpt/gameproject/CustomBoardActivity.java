@@ -2,7 +2,6 @@ package vn.edu.fpt.gameproject;
 
 import android.app.AlertDialog;
 import android.content.ClipData;
-import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.text.InputType;
@@ -401,7 +400,7 @@ public class CustomBoardActivity extends AppCompatActivity {
         GameManager tempManager = new GameManager(boardSize, null);
 
         // Disable special rules for validation since we're just checking basic validity
-        tempManager.setSpecialRules(false, false, false);
+        tempManager.setSpecialRules(false, false, false, false);
 
         // Convert our board to GameManager's format
         for (int row = 0; row < boardSize; row++) {
@@ -413,13 +412,8 @@ public class CustomBoardActivity extends AppCompatActivity {
                 }
             }
         }
-
-        // Check game state
         tempManager.updateGameState();
 
-        // Board is invalid if:
-        // 1. Any king is missing
-        // 2. It's checkmate/stalemate already
         return !tempManager.isGameOver();
     }
 

@@ -3,6 +3,8 @@ package vn.edu.fpt.gameproject.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import vn.edu.fpt.gameproject.manager.GameManager;
+
 public class Piece {
     PieceType type;
     Color color;
@@ -37,50 +39,54 @@ public class Piece {
         this.hasMoved = hasMoved;
     }
 
-    public List<int[]> getValidMoves(int row, int col, Piece[][] board) {
+    public List<int[]> getValidMoves(int row, int col, Piece[][] board, GameManager gameManager) {
         List<int[]> moves = new ArrayList<>();
 
         switch (this.type) {
             case PAWN:
-                getPawnMoves(row, col, board, moves);
+                getPawnMoves(row, col, board, moves, gameManager);
                 break;
             case ROOK:
-                getRookMoves(row, col, board, moves);
+                getRookMoves(row, col, board, moves, gameManager);
                 break;
             case KNIGHT:
-                getKnightMoves(row, col, board, moves);
+                getKnightMoves(row, col, board, moves, gameManager);
                 break;
             case BISHOP:
-                getBishopMoves(row, col, board, moves);
+                getBishopMoves(row, col, board, moves, gameManager);
                 break;
             case QUEEN:
-                getQueenMoves(row, col, board, moves);
+                getQueenMoves(row, col, board, moves, gameManager);
                 break;
             case KING:
-                getKingMoves(row, col, board, moves);
+                getKingMoves(row, col, board, moves, gameManager);
                 break;
             case ARCHBISHOP:
-                getArchbishopMoves(row, col, board, moves);
+                getArchbishopMoves(row, col, board, moves, gameManager);
                 break;
             case CHANCELLOR:
-                getChancellorMoves(row, col, board, moves);
+                getChancellorMoves(row, col, board, moves, gameManager);
                 break;
         }
 
         return moves;
     }
 
-    private void getPawnMoves(int row, int col, Piece[][] board, List<int[]> moves) {
+    private void getPawnMoves(int row, int col, Piece[][] board, List<int[]> moves, GameManager gameManager) {
         int direction = (color == Color.WHITE) ? -1 : 1;
         int startRow = (color == Color.WHITE) ? board.length - 2 : 1;
 
         // Forward move
         if (isValidSquare(row + direction, col, board) && board[row + direction][col] == null) {
-            moves.add(new int[]{row + direction, col});
+            if (!isRiverCrossing(row, col, row + direction, col, gameManager)) {
+                moves.add(new int[]{row + direction, col});
+            }
 
             // Double move from starting position
             if (row == startRow && board[row + 2*direction][col] == null) {
-                moves.add(new int[]{row + 2*direction, col});
+                if (!isRiverCrossing(row, col, row + 2*direction, col, gameManager)) {
+                    moves.add(new int[]{row + 2*direction, col});
+                }
             }
         }
 
@@ -90,7 +96,9 @@ public class Piece {
             if (isValidSquare(row + direction, captureCol, board)) {
                 Piece target = board[row + direction][captureCol];
                 if (target != null && target.color != this.color) {
-                    moves.add(new int[]{row + direction, captureCol});
+                    if (!isRiverCrossing(row, col, row + direction, captureCol, gameManager)) {
+                        moves.add(new int[]{row + direction, captureCol});
+                    }
                 }
             }
         }
@@ -98,7 +106,7 @@ public class Piece {
         // TODO: Implement en passant
     }
 
-    private void getRookMoves(int row, int col, Piece[][] board, List<int[]> moves) {
+    private void getRookMoves(int row, int col, Piece[][] board, List<int[]> moves, GameManager gameManager) {
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // Up, Down, Left, Right
 
         for (int[] dir : directions) {
@@ -107,6 +115,11 @@ public class Piece {
                 int newCol = col + dir[1] * i;
 
                 if (!isValidSquare(newRow, newCol, board)) break;
+
+                // Check if this move crosses the river
+                if (isRiverCrossing(row, col, newRow, newCol, gameManager)) {
+                    break;
+                }
 
                 Piece target = board[newRow][newCol];
                 if (target == null) {
@@ -121,7 +134,7 @@ public class Piece {
         }
     }
 
-    private void getKnightMoves(int row, int col, Piece[][] board, List<int[]> moves) {
+    private void getKnightMoves(int row, int col, Piece[][] board, List<int[]> moves, GameManager gameManager) {
         int[][] knightMoves = {
                 {-2, -1}, {-2, 1}, {-1, -2}, {-1, 2},
                 {1, -2}, {1, 2}, {2, -1}, {2, 1}
@@ -132,15 +145,17 @@ public class Piece {
             int newCol = col + move[1];
 
             if (isValidSquare(newRow, newCol, board)) {
-                Piece target = board[newRow][newCol];
-                if (target == null || target.color != this.color) {
-                    moves.add(new int[]{newRow, newCol});
+                if (!isRiverCrossing(row, col, newRow, newCol, gameManager)) {
+                    Piece target = board[newRow][newCol];
+                    if (target == null || target.color != this.color) {
+                        moves.add(new int[]{newRow, newCol});
+                    }
                 }
             }
         }
     }
 
-    private void getBishopMoves(int row, int col, Piece[][] board, List<int[]> moves) {
+    private void getBishopMoves(int row, int col, Piece[][] board, List<int[]> moves, GameManager gameManager) {
         int[][] directions = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}}; // Diagonal directions
 
         for (int[] dir : directions) {
@@ -149,6 +164,11 @@ public class Piece {
                 int newCol = col + dir[1] * i;
 
                 if (!isValidSquare(newRow, newCol, board)) break;
+
+                // Check if this move crosses the river
+                if (isRiverCrossing(row, col, newRow, newCol, gameManager)) {
+                    break;
+                }
 
                 Piece target = board[newRow][newCol];
                 if (target == null) {
@@ -163,13 +183,13 @@ public class Piece {
         }
     }
 
-    private void getQueenMoves(int row, int col, Piece[][] board, List<int[]> moves) {
+    private void getQueenMoves(int row, int col, Piece[][] board, List<int[]> moves, GameManager gameManager) {
         // Queen combines rook and bishop moves
-        getRookMoves(row, col, board, moves);
-        getBishopMoves(row, col, board, moves);
+        getRookMoves(row, col, board, moves, gameManager);
+        getBishopMoves(row, col, board, moves, gameManager);
     }
 
-    private void getKingMoves(int row, int col, Piece[][] board, List<int[]> moves) {
+    private void getKingMoves(int row, int col, Piece[][] board, List<int[]> moves, GameManager gameManager) {
         int[][] kingMoves = {
                 {-1, -1}, {-1, 0}, {-1, 1},
                 {0, -1},           {0, 1},
@@ -181,9 +201,11 @@ public class Piece {
             int newCol = col + move[1];
 
             if (isValidSquare(newRow, newCol, board)) {
-                Piece target = board[newRow][newCol];
-                if (target == null || target.color != this.color) {
-                    moves.add(new int[]{newRow, newCol});
+                if (!isRiverCrossing(row, col, newRow, newCol, gameManager)) {
+                    Piece target = board[newRow][newCol];
+                    if (target == null || target.color != this.color) {
+                        moves.add(new int[]{newRow, newCol});
+                    }
                 }
             }
         }
@@ -191,19 +213,27 @@ public class Piece {
         // TODO: Implement castling
     }
 
-    private void getArchbishopMoves(int row, int col, Piece[][] board, List<int[]> moves) {
+    private void getArchbishopMoves(int row, int col, Piece[][] board, List<int[]> moves, GameManager gameManager) {
         // Archbishop = Bishop + Knight
-        getBishopMoves(row, col, board, moves);
-        getKnightMoves(row, col, board, moves);
+        getBishopMoves(row, col, board, moves, gameManager);
+        getKnightMoves(row, col, board, moves, gameManager);
     }
 
-    private void getChancellorMoves(int row, int col, Piece[][] board, List<int[]> moves) {
+    private void getChancellorMoves(int row, int col, Piece[][] board, List<int[]> moves, GameManager gameManager) {
         // Chancellor = Rook + Knight
-        getRookMoves(row, col, board, moves);
-        getKnightMoves(row, col, board, moves);
+        getRookMoves(row, col, board, moves, gameManager);
+        getKnightMoves(row, col, board, moves, gameManager);
     }
 
     private boolean isValidSquare(int row, int col, Piece[][] board) {
         return row >= 0 && row < board.length && col >= 0 && col < board[0].length;
+    }
+
+    private boolean isRiverCrossing(int fromRow, int fromCol, int toRow, int toCol, GameManager gameManager) {
+        if (!gameManager.isRiverEnabled() || gameManager.canCrossRiver(this.type)) {
+            return false;
+        }
+
+        return gameManager.isRiverBetween(fromRow, toRow);
     }
 }

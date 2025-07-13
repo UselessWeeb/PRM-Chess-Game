@@ -186,7 +186,7 @@ public class CreateRoomFragment extends Fragment implements
     }
 
     @Override
-    public void onSettingsReceived(int receivedBoardSize, boolean fairyPieces, boolean enPassant, boolean promotion, boolean castling) {
+    public void onSettingsReceived(int receivedBoardSize, boolean fairyPieces, boolean enPassant, boolean promotion, boolean castling, boolean river) {
 
     }
 

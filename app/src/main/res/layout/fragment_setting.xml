@@ -10,11 +10,63 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Chess Rules Section -->
+        <TextView
+            android:id="@+id/volume_setting"
+            style="@style/SettingsSectionTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Volume Setting" />
+        <!-- Volume Section -->
+        <LinearLayout
+            style="@style/SettingsItemLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/SettingsItemText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Effect Volume" />
+
+            <SeekBar
+                android:id="@+id/seekbar_effect_volume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:max="100"
+                android:progress="50" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/SettingsItemLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/SettingsItemText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Background Volume" />
+
+            <SeekBar
+                android:id="@+id/seekbar_background_volume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:max="100"
+                android:progress="70" />
+
+        </LinearLayout>
+
         <TextView
             style="@style/SettingsSectionTitle"
-            android:text="Chess Rules"/>
+            android:gravity="center"
+            android:text="Chess Rules" />
 
+        <!-- Chess Rules Section -->
         <LinearLayout
             style="@style/SettingsItemLayout">
             <Switch
@@ -69,6 +121,20 @@
             <TextView
                 style="@style/SettingsItemText"
                 android:text="Castling"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/SettingsItemLayout">
+            <Switch
+                android:id="@+id/switch_river"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:checked="true"/>
+            <TextView
+                style="@style/SettingsItemText"
+                android:text="River"/>
         </LinearLayout>
 
         <!-- Buttons -->

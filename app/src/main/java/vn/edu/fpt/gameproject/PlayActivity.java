@@ -24,6 +24,7 @@ import java.util.Stack;
 
 import vn.edu.fpt.gameproject.fragment.PromotionDialogFragment;
 import vn.edu.fpt.gameproject.fragment.SettingsFragment;
+import vn.edu.fpt.gameproject.manager.AudioManager;
 import vn.edu.fpt.gameproject.manager.GameManager;
 import vn.edu.fpt.gameproject.model.BoardState;
 import vn.edu.fpt.gameproject.model.Color;
@@ -49,14 +50,19 @@ public class PlayActivity extends AppCompatActivity {
     private Button undoBtn;
     private Button resetBtn;
     private boolean isHelperActive = false;
+    private boolean isAIMode = false;
+
+    private AudioManager soundManager;
     private Stack<BoardState> moveHistory = new Stack<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
+        soundManager = new AudioManager(this);
+
         String gameMode = getIntent().getStringExtra("GAME_MODE");
-        boolean isAIMode = "ai".equals(gameMode);
+        isAIMode = "ai".equals(gameMode);
 
         if (isAIMode) {
             // Get difficulty from intent or use default
@@ -67,6 +73,9 @@ public class PlayActivity extends AppCompatActivity {
                 aiDifficulty = Difficulty.HARD;
             }
         }
+
+        //play background
+        soundManager.initializeBackgroundMusic();
 
         initializeGame();
         if ("wifi".equals(gameMode)) {
@@ -110,7 +119,16 @@ public class PlayActivity extends AppCompatActivity {
             return;
         }
 
-        moveHistory.pop();
+        if (isAIMode) {
+            if (moveHistory.size() < 3) {
+                Toast.makeText(this, "No moves to undo", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            moveHistory.pop();
+            moveHistory.pop();
+        } else {
+            moveHistory.pop();
+        }
         BoardState previousState = moveHistory.peek();
 
         gameManager.loadBoardState(previousState);
@@ -161,29 +179,29 @@ public class PlayActivity extends AppCompatActivity {
     private void handleAIMove() {
         if (gameManager.isGameOver()) return;
 
-        gameManager.makeAIMoveIfNeeded();
+        if(isAIMode){
+            gameManager.makeAIMoveIfNeeded();
+            saveCurrentState();
+        }
     }
 
     private void initializeGame() {
-        // Check if we have a saved board state
         String boardStateJson = getIntent().getStringExtra("BOARD_STATE");
         if (boardStateJson != null) {
-            // Load from saved board state
             BoardState boardState = new Gson().fromJson(boardStateJson, BoardState.class);
             boardSize = boardState.getBoardSize();
             gameManager = new GameManager(boardSize, this);
             loadBoardState(boardState);
         } else {
-            // Load default board with size from intent
             boardSize = getIntent().getIntExtra("BOARD_SIZE", 8);
             gameManager = new GameManager(boardSize, this);
         }
 
-        // Apply settings
         gameManager.setSpecialRules(
                 SettingsFragment.getPromotionEnabled(this),
                 SettingsFragment.getEnPassantEnabled(this),
-                SettingsFragment.getCastlingEnabled(this)
+                SettingsFragment.getCastlingEnabled(this),
+                SettingsFragment.getRiverEnabled(this)
         );
 
         cells = new FrameLayout[boardSize][boardSize];
@@ -206,7 +224,6 @@ public class PlayActivity extends AppCompatActivity {
         // Clear the board first
         gameManager.clearBoard();
 
-        // Add all pieces from the board state
         for (BoardState.PiecePosition piecePos : boardState.getPieces()) {
             gameManager.addPiece(
                     piecePos.getRow(),
@@ -273,7 +290,6 @@ public class PlayActivity extends AppCompatActivity {
         Piece[][] board = gameManager.getBoard();
         Piece clickedPiece = board[row][col];
 
-        // If there's a selected piece and we click on a highlighted tile, try to move
         if (selectedPieceView != null && selectedRow != -1 && selectedCol != -1) {
             if (isTileHighlighted(row, col)) {
                 // Try to move the piece
@@ -284,7 +300,6 @@ public class PlayActivity extends AppCompatActivity {
                     if (gameManager.isGameOver()) {
                         Toast.makeText(this, gameManager.getGameStatus(), Toast.LENGTH_LONG).show();
                     } else {
-                        // Trigger AI move if in AI mode
                         handleAIMove();
                     }
                 }
@@ -294,7 +309,6 @@ public class PlayActivity extends AppCompatActivity {
         }
         clearHighlights();
 
-        // If clicking on a piece of the current player, select it
         if (clickedPiece != null && clickedPiece.getColor() == gameManager.getCurrentTurn()) {
             selectedRow = row;
             selectedCol = col;
@@ -464,6 +478,21 @@ public class PlayActivity extends AppCompatActivity {
             }
         }
 
+        if (gameManager.isRiverEnabled()) {
+            int riverRow = gameManager.getRiverRow();
+            for (int col = 0; col < boardSize; col++) {
+                FrameLayout cell = cells[riverRow][col];
+                ImageView riverTile = new ImageView(this);
+                riverTile.setImageResource(R.drawable.river_tile);
+                riverTile.setLayoutParams(new FrameLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT));
+                riverTile.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                riverTile.setTag("river");
+                cell.addView(riverTile);
+            }
+        }
+
         // Add pieces to the board
         for (int row = 0; row < boardSize; row++) {
             for (int col = 0; col < boardSize; col++) {
@@ -576,11 +605,38 @@ public class PlayActivity extends AppCompatActivity {
         isHelperActive = false;
     }
 
+    public void playMoveSound(){
+        soundManager.playSound(AudioManager.SOUND_MOVE);
+    }
+
+    public void playCaptureSound(){
+        soundManager.playSound(AudioManager.SOUND_CAPTURE);
+    }
+
+    public void playPromotionSound(){
+        soundManager.playSound(AudioManager.SOUND_PROMOTE);
+    }
+
+    public void playCheckSound(){
+        soundManager.playSound(AudioManager.SOUND_CHECK);
+    }
+
+    public void playWinSound(){
+        soundManager.playSound(AudioManager.SOUND_WIN);
+    }
+
+    public void playLoseSound(){
+        soundManager.playSound(AudioManager.SOUND_LOSE);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (soundManager != null) {
+            soundManager.release();
+        }
         if (gameManager != null && gameManager.isWiFiConnected()) {
-            gameManager.disconnectWiFi(); // Add this method to GameManager
+            gameManager.disconnectWiFi();
         }
     }
 }

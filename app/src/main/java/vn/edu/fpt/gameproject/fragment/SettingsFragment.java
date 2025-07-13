@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -20,11 +21,17 @@ public class SettingsFragment extends Fragment {
     private static final String KEY_EN_PASSANT = "en_passant";
     private static final String KEY_PROMOTION = "promotion";
     private static final String KEY_CASTLING = "castling";
+    private static final String KEY_RIVER = "river";
+    private static final String KEY_MUSIC_VOLUME = "background";
+    private static final String KEY_SOUND_VOLUME = "effect";
 
     private Switch switchFairyPieces;
     private Switch switchEnPassant;
     private Switch switchPromotion;
     private Switch switchCastling;
+    private Switch switchRiver;
+    private SeekBar seekBarMusicVolume;
+    private SeekBar seekBarSoundVolume;
     private Button btnSave;
     private Button btnDefault;
 
@@ -43,6 +50,12 @@ public class SettingsFragment extends Fragment {
         switchEnPassant = view.findViewById(R.id.switch_en_passant);
         switchPromotion = view.findViewById(R.id.switch_promotion);
         switchCastling = view.findViewById(R.id.switch_castling);
+        switchRiver = view.findViewById(R.id.switch_river);
+
+        //volume
+        seekBarSoundVolume = view.findViewById(R.id.seekbar_effect_volume);
+        seekBarMusicVolume = view.findViewById(R.id.seekbar_background_volume);
+
         btnSave = view.findViewById(R.id.btn_save);
         btnDefault = view.findViewById(R.id.btn_default);
 
@@ -62,6 +75,11 @@ public class SettingsFragment extends Fragment {
         switchEnPassant.setChecked(prefs.getBoolean(KEY_EN_PASSANT, true));
         switchPromotion.setChecked(prefs.getBoolean(KEY_PROMOTION, true));
         switchCastling.setChecked(prefs.getBoolean(KEY_CASTLING, true));
+        switchRiver.setChecked(prefs.getBoolean(KEY_RIVER, false));
+
+        //load volume
+        seekBarMusicVolume.setProgress(prefs.getInt(KEY_MUSIC_VOLUME, 50));
+        seekBarSoundVolume.setProgress(prefs.getInt(KEY_SOUND_VOLUME, 70));
     }
 
     private void saveSettings() {
@@ -73,7 +91,10 @@ public class SettingsFragment extends Fragment {
         editor.putBoolean(KEY_EN_PASSANT, switchEnPassant.isChecked());
         editor.putBoolean(KEY_PROMOTION, switchPromotion.isChecked());
         editor.putBoolean(KEY_CASTLING, switchCastling.isChecked());
+        editor.putBoolean(KEY_RIVER, switchRiver.isChecked());
 
+        editor.putInt(KEY_MUSIC_VOLUME, seekBarMusicVolume.getProgress());
+        editor.putInt(KEY_SOUND_VOLUME, seekBarSoundVolume.getProgress());
         editor.apply();
 
         Toast.makeText(getContext(), "Settings saved", Toast.LENGTH_SHORT).show();
@@ -85,7 +106,10 @@ public class SettingsFragment extends Fragment {
         switchEnPassant.setChecked(true);
         switchPromotion.setChecked(true);
         switchCastling.setChecked(true);
+        switchRiver.setChecked(false);
 
+        seekBarMusicVolume.setProgress(50);
+        seekBarSoundVolume.setProgress(70);
         Toast.makeText(getContext(), "Default settings restored", Toast.LENGTH_SHORT).show();
     }
 
@@ -108,5 +132,20 @@ public class SettingsFragment extends Fragment {
     public static boolean getCastlingEnabled(Context context) {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
                 .getBoolean(KEY_CASTLING, true);
+    }
+
+    public static boolean getRiverEnabled(Context context){
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                .getBoolean(KEY_RIVER, false);
+    }
+
+    public static int getMusicVolume(Context context) {
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                .getInt(KEY_MUSIC_VOLUME, 50);
+    }
+
+    public static int getSoundVolume(Context context) {
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                .getInt(KEY_SOUND_VOLUME, 70);
     }
 }

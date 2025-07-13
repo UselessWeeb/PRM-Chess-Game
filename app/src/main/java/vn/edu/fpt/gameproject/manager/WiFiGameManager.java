@@ -40,7 +40,7 @@ public class WiFiGameManager {
         void onError(String message);
         void onBoardSizeReceived(int boardSize); // New method for board size
 
-        void onSettingsReceived(int receivedBoardSize, boolean fairyPieces, boolean enPassant, boolean promotion, boolean castling);
+        void onSettingsReceived(int receivedBoardSize, boolean fairyPieces, boolean enPassant, boolean promotion, boolean castling, boolean river);
     }
 
     public WiFiGameManager(GameStateListener listener, boolean isHost,
@@ -114,9 +114,10 @@ public class WiFiGameManager {
                     boolean enPassant = Boolean.parseBoolean(parts[3]);
                     boolean promotion = Boolean.parseBoolean(parts[4]);
                     boolean castling = Boolean.parseBoolean(parts[5]);
+                    boolean river = Boolean.parseBoolean(parts[6]);
 
                     // You'll need to add these to your GameStateListener interface
-                    listener.onSettingsReceived(receivedBoardSize, fairyPieces, enPassant, promotion, castling);
+                    listener.onSettingsReceived(receivedBoardSize, fairyPieces, enPassant, promotion, castling, river);
                 }
             }
         } catch (IOException | NumberFormatException | ArrayIndexOutOfBoundsException e) {

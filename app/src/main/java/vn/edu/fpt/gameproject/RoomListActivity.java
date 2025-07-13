@@ -190,7 +190,7 @@ public class RoomListActivity extends AppCompatActivity implements
     @Override
     public void onSettingsReceived(int boardSize, boolean fairyPieces,
                                    boolean enPassant, boolean promotion,
-                                   boolean castling) {
+                                   boolean castling, boolean river) {
         receivedBoardSize = boardSize;
 
         runOnUiThread(() -> {
@@ -202,6 +202,7 @@ public class RoomListActivity extends AppCompatActivity implements
             intent.putExtra("EN_PASSANT", enPassant);
             intent.putExtra("PROMOTION", promotion);
             intent.putExtra("CASTLING", castling);
+            intent.putExtra("RIVER", river);
             startActivity(intent);
             finish();
         });
