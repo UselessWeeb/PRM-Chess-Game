@@ -53,4 +53,23 @@
     <string name="chess_pieces">Chess Pieces</string>
     <string name="chess_rules_decs">1. Players alternate turns moving one piece at a time\n2. Capture opponent pieces by moving onto their square\n3. The King must not be left in check\n4. Win by checkmating the opponent\'s King\n5. Special moves: Castling, En Passant, Promotion</string>
     <string name="basic_rules">Basic Rules</string>
+    <string name="undo_btn">Undo</string>
+    <string name="new_game_btn">New Game</string>
+    <string name="captured_section">Captured:</string>
+    <string name="fairy_pieces">Fairy Pieces</string>
+    <string name="en_passant">En Passant</string>
+    <string name="castling">Castling</string>
+    <string name="promotion">Promotion</string>
+    <string name="game_rules">Game Rules</string>
+    <string name="game_modes">Game Modes</string>
+    <string name="local">1. Local 1v1 - Play with a friend on the same device</string>
+    <string name="hotspot">2. Hotspot 1v1 - Connect with a friend via WiFi hotspot</string>
+    <string name="custom_boards">Custom Boards</string>
+    <string name="custom_board_decs">Create boards from 6x6 up to 16x16 grids for unique gameplay experiences. Larger boards allow for more strategic possibilities with extended piece movement.</string>
+    <string name="save_settings">Save</string>
+    <string name="restore_default">Restore Default</string>
+    <string name="river">River</string>
+    <string name="effect_volume">Effect Volume</string>
+    <string name="volume_setting">Volume Setting</string>
+    <string name="background_volume">Background Volume</string>
 </resources>

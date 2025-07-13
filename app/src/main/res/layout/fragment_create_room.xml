@@ -61,7 +61,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Game Rules"
+            android:text="@string/game_rules"
             android:textSize="16sp"
             android:layout_marginBottom="8dp"/>
 
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:minWidth="48dp"
             android:minHeight="48dp"
-            android:text="Fairy Pieces"/>
+            android:text="@string/fairy_pieces"/>
 
         <Switch
             android:id="@+id/switch_en_passant"
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:minWidth="48dp"
             android:minHeight="48dp"
-            android:text="En Passant"/>
+            android:text="@string/en_passant"/>
 
         <Switch
             android:id="@+id/switch_promotion"
@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:minWidth="48dp"
             android:minHeight="48dp"
-            android:text="Promotion"/>
+            android:text="@string/promotion"/>
 
         <Switch
             android:id="@+id/switch_castling"
@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
             android:minWidth="48dp"
             android:minHeight="48dp"
-            android:text="Castling"/>
+            android:text="@string/castling"/>
     </LinearLayout>
 
     <TextView

@@ -28,7 +28,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Game Modes"
+            android:text="@string/game_modes"
             android:textSize="20sp"
             android:textColor="#5D4037"
             android:textStyle="bold"
@@ -37,14 +37,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="1. Local 1v1 - Play with a friend on the same device"
+            android:text="@string/local"
             android:textSize="16sp"
             android:layout_marginBottom="4dp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="2. Hotspot 1v1 - Connect with a friend via WiFi hotspot"
+            android:text="@string/hotspot"
             android:textSize="16sp"
             android:layout_marginBottom="16dp"/>
 
@@ -52,7 +52,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Custom Boards"
+            android:text="@string/custom_boards"
             android:textSize="20sp"
             android:textColor="#5D4037"
             android:textStyle="bold"
@@ -61,7 +61,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create boards from 6x6 up to 16x16 grids for unique gameplay experiences. Larger boards allow for more strategic possibilities with extended piece movement."
+            android:text="@string/custom_board_decs"
             android:textSize="16sp"
             android:layout_marginBottom="16dp"/>
 

@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Volume Setting" />
+            android:text="@string/volume_setting" />
         <!-- Volume Section -->
         <LinearLayout
             style="@style/SettingsItemLayout"
@@ -28,7 +28,7 @@
                 style="@style/SettingsItemText"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Effect Volume" />
+                android:text="@string/effect_volume" />
 
             <SeekBar
                 android:id="@+id/seekbar_effect_volume"
@@ -49,7 +49,7 @@
                 style="@style/SettingsItemText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Background Volume" />
+                android:text="@string/background_volume" />
 
             <SeekBar
                 android:id="@+id/seekbar_background_volume"
@@ -64,7 +64,7 @@
         <TextView
             style="@style/SettingsSectionTitle"
             android:gravity="center"
-            android:text="Chess Rules" />
+            android:text="@string/game_rules" />
 
         <!-- Chess Rules Section -->
         <LinearLayout
@@ -78,7 +78,7 @@
                 android:checked="true"/>
             <TextView
                 style="@style/SettingsItemText"
-                android:text="Allow Fairy Pieces"/>
+                android:text="@string/fairy_pieces"/>
         </LinearLayout>
 
         <LinearLayout
@@ -92,7 +92,7 @@
                 android:checked="true"/>
             <TextView
                 style="@style/SettingsItemText"
-                android:text="En Passant"/>
+                android:text="@string/en_passant"/>
         </LinearLayout>
 
         <LinearLayout
@@ -106,7 +106,7 @@
                 android:checked="true"/>
             <TextView
                 style="@style/SettingsItemText"
-                android:text="Pawn Promotion"/>
+                android:text="@string/promotion"/>
         </LinearLayout>
 
         <LinearLayout
@@ -120,7 +120,7 @@
                 android:checked="true"/>
             <TextView
                 style="@style/SettingsItemText"
-                android:text="Castling"/>
+                android:text="@string/castling"/>
         </LinearLayout>
 
         <LinearLayout
@@ -134,7 +134,7 @@
                 android:checked="true"/>
             <TextView
                 style="@style/SettingsItemText"
-                android:text="River"/>
+                android:text="@string/river"/>
         </LinearLayout>
 
         <!-- Buttons -->
@@ -147,12 +147,12 @@
             <Button
                 android:id="@+id/btn_save"
                 style="@style/SettingsButton"
-                android:text="Save"/>
+                android:text="@string/save_settings"/>
 
             <Button
                 android:id="@+id/btn_default"
                 style="@style/SettingsButton"
-                android:text="Restore Default"/>
+                android:text="@string/restore_default"/>
         </LinearLayout>
 
     </LinearLayout>

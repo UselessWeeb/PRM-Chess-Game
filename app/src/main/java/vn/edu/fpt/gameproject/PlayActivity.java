@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -489,6 +491,11 @@ public class PlayActivity extends AppCompatActivity {
                         ViewGroup.LayoutParams.MATCH_PARENT));
                 riverTile.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 riverTile.setTag("river");
+                //set up animation
+                Animation animation = AnimationUtils.loadAnimation(this, R.anim.river_animation);
+                animation.setStartOffset(col * 100);
+                riverTile.startAnimation(animation);
+
                 cell.addView(riverTile);
             }
         }

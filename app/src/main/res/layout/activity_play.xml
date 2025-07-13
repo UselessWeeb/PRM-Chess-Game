@@ -38,7 +38,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Captured: "
+                    android:text="@string/captured_section"
                     android:textSize="12sp"
                     android:textColor="#666666" />
 
@@ -89,7 +89,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Captured: "
+                    android:text="@string/captured_section"
                     android:textSize="12sp"
                     android:textColor="#666666" />
 
@@ -121,21 +121,21 @@
                     android:id="@+id/return_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Return"
+                    android:text="@string/return_btn"
                     android:layout_margin="8dp"/>
 
                 <Button
                     android:id="@+id/undo_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Undo"
+                    android:text="@string/undo_btn"
                     android:layout_margin="8dp"/>
 
                 <Button
                     android:id="@+id/btn_reset"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="New Game"
+                    android:text="@string/new_game_btn"
                     android:layout_margin="8dp"/>
             </LinearLayout>
         </LinearLayout>
